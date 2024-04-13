@@ -3,11 +3,43 @@ package com.explore.eldercare.ui.notifications
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.explore.eldercare.ui.notifications.data.Reminder
+import com.explore.eldercare.ui.notifications.data.ReminderRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
-class NotificationsViewModel : ViewModel() {
+class NotificationsViewModel(
+    private val reminderRepository: ReminderRepository = Graph.reminderRepository
+) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    lateinit var  getAllReminders : Flow<List<Reminder>>
+
+    init {
+        viewModelScope.launch {
+            getAllReminders = reminderRepository.getAllReminder()
+        }
     }
-    val text: LiveData<String> = _text
+
+    fun addReminder(reminder: Reminder){
+        viewModelScope.launch(Dispatchers.IO) {
+            reminderRepository.addReminder(reminder)
+        }
+    }
+
+    fun updateReminder(reminder: Reminder){
+        viewModelScope.launch(Dispatchers.IO) {
+            reminderRepository.updateAReminder(reminder)
+        }
+    }
+
+    fun getReminderById(id: Long) = reminderRepository.getAReminderById(id)
+
+    fun deleteReminder(reminder: Reminder){
+        viewModelScope.launch(Dispatchers.IO) {
+            reminderRepository.deleteReminder(reminder)
+        }
+    }
+
 }

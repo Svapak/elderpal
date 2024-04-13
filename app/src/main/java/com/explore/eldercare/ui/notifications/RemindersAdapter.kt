@@ -23,6 +23,12 @@ class RemindersAdapter : RecyclerView.Adapter<RemindersAdapter.ViewHolder>() {
         }
 
     }
+
+    private lateinit var overdueCallback : (item: Reminder) -> Unit
+
+    fun overdueListener(callback: (item: Reminder) -> Unit){
+        overdueCallback = callback
+    }
     class ViewHolder(val binding : ReminderListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,5 +44,8 @@ class RemindersAdapter : RecyclerView.Adapter<RemindersAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.rvReminderListItemMessage.text = listOf[position].message
         holder.binding.rvReminderListItemFrequency.text = listOf[position].frequency
+        holder.binding.btnDelete.setOnClickListener {
+            overdueCallback(listOf[position])
+        }
     }
 }

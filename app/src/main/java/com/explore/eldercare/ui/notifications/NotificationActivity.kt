@@ -2,20 +2,19 @@ package com.explore.eldercare.ui.notifications
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
-import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
+import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
@@ -26,7 +25,7 @@ import com.explore.eldercare.ui.notifications.data.Reminder
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.flow.collect
+import java.util.Date
 
 class NotificationActivity : AppCompatActivity() {
 
@@ -52,13 +51,16 @@ class NotificationActivity : AppCompatActivity() {
             val view = layoutInflater.inflate(R.layout.set_reminder_dialog, null)
             val btnCreate = view.findViewById<AppCompatButton>(R.id.btn_create)
             val message = view.findViewById<TextInputEditText>(R.id.message)
-            val time = view.findViewById<TimePicker>(R.id.timePicker)
+            val timePicker = view.findViewById<TimePicker>(R.id.timePicker)
+            val datePicker = view.findViewById<DatePicker>(R.id.datePicker)
             val toggleGroup = view.findViewById<MaterialButtonToggleGroup>(R.id.toggleButton)
-            val frequency = if (toggleGroup.checkedButtonId == R.id.button1) "once" else "daily"
+            var frequency = "daily"
             dialog.setCancelable(true)
             dialog.setContentView(view)
             dialog.show()
             btnCreate.setOnClickListener {
+                if (toggleGroup.checkedButtonId == R.id.btn_once) frequency =  "once"
+                val time = getTime(timePicker,datePicker)
                 if (checkNotificationPermission(applicationContext)) scheduleNotification(
                     frequency,
                     message.text.toString(),
@@ -66,22 +68,23 @@ class NotificationActivity : AppCompatActivity() {
                 )
             }
         }
-        viewModel  = NotificationsViewModel()
+        adapter = RemindersAdapter()
+        viewModel  = NotificationsViewModel(adapter = adapter)
         val list = viewModel.getAllReminders
 
-        adapter = RemindersAdapter()
+
         adapter.setReminders(list)
         binding.rvReminder.adapter = adapter
 
     }
 
     @SuppressLint("ScheduleExactAlarm")
-    private fun scheduleNotification(frequency : String,message: String,timePicker : TimePicker){
+    private fun scheduleNotification(frequency : String,message: String,time: Long){
         val intent = Intent(applicationContext,BroadCastReceiver::class.java)
 
         intent.putExtra(messageExtra,message)
 
-        val pendingIntent = PendingIntent.getBroadcast(// idi kuda
+        val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
             121,
             intent,
@@ -89,46 +92,41 @@ class NotificationActivity : AppCompatActivity() {
         )
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        //val time = getTime()
-        val timeNow = System.currentTimeMillis()
-        val calendar: Calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY,timePicker.hour)
-            set(Calendar.MINUTE, timePicker.minute)
-        }
         if(frequency == "once"){
-//            calendar.set(Calendar.YEAR,2024)
-//            calendar.set(Calendar.MONTH,System.currentTimeMillis().)
+            Log.d("time","current time : ${System.currentTimeMillis()}, got:" + time.toString())
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,//idi endo
-                calendar.timeInMillis,
+                time,
                 pendingIntent
             )
         }
         else{
             alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                24*60*60*1000,
+                time,
+                AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
         }
-
-        viewModel.addReminder(Reminder(message = message, frequency = frequency, time = calendar.timeInMillis.toString()))
-        Toast.makeText(applicationContext,"At: notification is set with title :$title and message; $message",Toast.LENGTH_SHORT).show()
+        val reminderNew = Reminder(message = message, frequency = frequency, time = time.toString())
+        Log.d("newReminder", reminderNew.toString())
+        viewModel.addReminder(reminderNew)
+        adapter.notifyDataSetChanged()
+        Toast.makeText(applicationContext,"Reminder is set 😊",Toast.LENGTH_SHORT).show()
     }
 
-//    private fun getTime(): Long {
-//        val minute = binding.timePicker.minute
-//        val hour = binding.timePicker.hour
-//        val day = binding.datePicker.dayOfMonth
-//        val month = binding.datePicker.month
-//        val year = binding.datePicker.year
-//
-//        val calendar = Calendar.getInstance()
-//        calendar.set(year,month,day,hour,minute)
-//
-//        return calendar.timeInMillis
-//    }
+    private fun getTime(timePicker: TimePicker,datePicker: DatePicker): Long {
+        val minute = timePicker.minute
+        val hour = timePicker.hour
+        val day = datePicker.dayOfMonth
+        val month = datePicker.month
+        val year = datePicker.year
+
+        val calendar = Calendar.getInstance()
+        calendar.set(year,month,day,hour,minute)
+
+        return calendar.timeInMillis
+    }
 
     private fun checkNotificationPermission(context: Context): Boolean {
         val notificationManager =

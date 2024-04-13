@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class NotificationsViewModel(
-    private val reminderRepository: ReminderRepository = Graph.reminderRepository
+    private val reminderRepository: ReminderRepository = Graph.reminderRepository,
+    val adapter: RemindersAdapter
 ) : ViewModel() {
 
     lateinit var  getAllReminders : Flow<List<Reminder>>
@@ -37,6 +38,9 @@ class NotificationsViewModel(
     fun getReminderById(id: Long) = reminderRepository.getAReminderById(id)
 
     fun deleteReminder(reminder: Reminder){
+        adapter.overdueListener {
+
+        }
         viewModelScope.launch(Dispatchers.IO) {
             reminderRepository.deleteReminder(reminder)
         }

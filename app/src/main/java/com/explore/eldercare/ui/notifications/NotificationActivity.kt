@@ -1,10 +1,8 @@
 package com.explore.eldercare.ui.notifications
 
 import android.annotation.SuppressLint
-import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
@@ -25,13 +23,13 @@ import com.explore.eldercare.ui.notifications.data.Reminder
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputEditText
-import java.util.Date
 
 class NotificationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNotificationBinding
     private lateinit var viewModel: NotificationsViewModel
     private lateinit var adapter: RemindersAdapter
+    private lateinit var scheduler: AndroidAlarmScheduler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +43,7 @@ class NotificationActivity : AppCompatActivity() {
         }
 
         createNotificationChannel()
+        scheduler = AndroidAlarmScheduler(this)
 
         binding.fabCreateReminder.setOnClickListener {
             val dialog = BottomSheetDialog(this)
@@ -59,63 +58,46 @@ class NotificationActivity : AppCompatActivity() {
             dialog.setContentView(view)
             dialog.show()
             btnCreate.setOnClickListener {
-                if (toggleGroup.checkedButtonId == R.id.btn_once) frequency =  "once"
-                val time = getTime(timePicker,datePicker)
-                if (checkNotificationPermission(applicationContext)) scheduleNotification(
-                    frequency,
-                    message.text.toString(),
-                    time
+                if (toggleGroup.checkedButtonId == R.id.btn_once) frequency = "once"
+                val time = getTime(timePicker, datePicker)
+                val reminder = Reminder(
+                    id = time,
+                    message = message.text.toString(),
+                    frequency = frequency,
+                    time = time.toString()
                 )
+                if (checkNotificationPermission(applicationContext)) {
+                    scheduleNotification(reminder)
+                }
+                message.text?.clear()
+                dialog.dismiss()
             }
         }
         adapter = RemindersAdapter()
-        viewModel  = NotificationsViewModel(adapter = adapter)
+        viewModel = NotificationsViewModel(scheduler = scheduler)
         val list = viewModel.getAllReminders
 
 
         adapter.setReminders(list)
+
+        adapter.overdueListener {
+            println("delete pressed")
+            Log.d("deletepressed", it.toString())
+            viewModel.deleteReminder(it)
+        }
         binding.rvReminder.adapter = adapter
 
     }
 
     @SuppressLint("ScheduleExactAlarm")
-    private fun scheduleNotification(frequency : String,message: String,time: Long){
-        val intent = Intent(applicationContext,BroadCastReceiver::class.java)
-
-        intent.putExtra(messageExtra,message)
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            121,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        if(frequency == "once"){
-            Log.d("time","current time : ${System.currentTimeMillis()}, got:" + time.toString())
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,//idi endo
-                time,
-                pendingIntent
-            )
-        }
-        else{
-            alarmManager.setRepeating(
-                AlarmManager.RTC_WAKEUP,
-                time,
-                AlarmManager.INTERVAL_DAY,
-                pendingIntent
-            )
-        }
-        val reminderNew = Reminder(message = message, frequency = frequency, time = time.toString())
-        Log.d("newReminder", reminderNew.toString())
-        viewModel.addReminder(reminderNew)
+    private fun scheduleNotification(reminder: Reminder) {
+        Log.d("newReminder", reminder.toString())
+        viewModel.addReminder(reminder)
         adapter.notifyDataSetChanged()
-        Toast.makeText(applicationContext,"Reminder is set 😊",Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "Reminder is set 😊", Toast.LENGTH_SHORT).show()
     }
 
-    private fun getTime(timePicker: TimePicker,datePicker: DatePicker): Long {
+    private fun getTime(timePicker: TimePicker, datePicker: DatePicker): Long {
         val minute = timePicker.minute
         val hour = timePicker.hour
         val day = datePicker.dayOfMonth
@@ -123,7 +105,7 @@ class NotificationActivity : AppCompatActivity() {
         val year = datePicker.year
 
         val calendar = Calendar.getInstance()
-        calendar.set(year,month,day,hour,minute)
+        calendar.set(year, month, day, hour, minute)
 
         return calendar.timeInMillis
     }
@@ -151,7 +133,7 @@ class NotificationActivity : AppCompatActivity() {
         val name = "Reminder Channel"
         val description = "A channel for all the notification of reminders"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(channelID,name,importance)
+        val channel = NotificationChannel(channelID, name, importance)
         channel.description = description
         channel.enableVibration(true)
 

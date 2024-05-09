@@ -1,5 +1,10 @@
 package com.explore.eldercare.ui.notifications
 
+import android.app.AlarmManager
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class NotificationsViewModel(
     private val reminderRepository: ReminderRepository = Graph.reminderRepository,
-    val adapter: RemindersAdapter
+    val scheduler: AndroidAlarmScheduler
 ) : ViewModel() {
 
     lateinit var  getAllReminders : Flow<List<Reminder>>
@@ -26,6 +31,7 @@ class NotificationsViewModel(
     fun addReminder(reminder: Reminder){
         viewModelScope.launch(Dispatchers.IO) {
             reminderRepository.addReminder(reminder)
+            scheduler.scheduleReminder(reminder)
         }
     }
 
@@ -38,10 +44,8 @@ class NotificationsViewModel(
     fun getReminderById(id: Long) = reminderRepository.getAReminderById(id)
 
     fun deleteReminder(reminder: Reminder){
-        adapter.overdueListener {
-
-        }
         viewModelScope.launch(Dispatchers.IO) {
+            scheduler.deleteReminder(reminder)
             reminderRepository.deleteReminder(reminder)
         }
     }

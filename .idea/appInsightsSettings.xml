@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.explore.eldercare" />
+                  <option name="mobileSdkAppId" value="1:86366590696:android:38acfb5a7601510ae79b5d" />
+                  <option name="projectId" value="eldercare-791db" />
+                  <option name="projectNumber" value="86366590696" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

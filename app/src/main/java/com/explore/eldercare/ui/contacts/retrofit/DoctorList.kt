@@ -1,10 +1,12 @@
 package com.explore.eldercare.ui.contacts.retrofit
 
 data class DoctorList(
-    val username: String?,
-    val email: String?,
+    val id: String?,
     val image: String?,
-    val experience: String?,
+    val username: String?,
     val specialization: String?,
+    val phone: String?,
+    val email: String?,
+    val experience: String?,
     val description: String?
 )

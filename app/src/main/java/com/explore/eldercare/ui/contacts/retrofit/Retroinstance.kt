@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class Retroinstance {
     companion object{
-        val BASE_URL = "http://localhost:8000/users"
+        val BASE_URL = "http://localhost:8000"
 
         fun getRetroInstance(): Retrofit{
             return Retrofit.Builder()

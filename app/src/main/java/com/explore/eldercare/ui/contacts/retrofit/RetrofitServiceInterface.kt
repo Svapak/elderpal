@@ -4,6 +4,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface RetrofitServiceInterface {
-    @GET("/")
+    @GET("/users/")
     fun getDoctorList(): Call<List<DoctorList>>
 }

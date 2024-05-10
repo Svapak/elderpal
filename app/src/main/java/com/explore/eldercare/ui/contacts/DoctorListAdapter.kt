@@ -16,8 +16,6 @@ import com.bumptech.glide.Glide
 import com.explore.eldercare.MainActivity
 import com.explore.eldercare.R
 import com.explore.eldercare.ui.contacts.retrofit.DoctorList
-import com.squareup.picasso.Picasso
-import kotlinx.coroutines.withContext
 
 
 class DoctorListAdapter(private val dataList: ArrayList<DoctorList>): RecyclerView.Adapter<DoctorListAdapter.MyViewHolder>() {
@@ -52,7 +50,10 @@ class DoctorListAdapter(private val dataList: ArrayList<DoctorList>): RecyclerVi
         holder.specialization.text = data.specialization
         holder.description.text = data.description
         holder.phone.text= data.phone
-        if(data.image!=null) Picasso.get().load(data.image).into(holder.pfp)
+        if(data.image!=null) {
+            Glide.with(holder.itemView.context).load(data.image).into(holder.pfp)
+            //Picasso.get().load(data.image).into(holder.pfp)
+        }
 
         holder.button.setOnClickListener {
 //            val validNumber = Regex("^[+]?[0-9]{10}$")

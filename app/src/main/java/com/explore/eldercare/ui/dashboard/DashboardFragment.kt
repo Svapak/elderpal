@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.explore.eldercare.R
 import com.explore.eldercare.databinding.FragmentDashboardBinding
@@ -62,6 +63,10 @@ class DashboardFragment : Fragment() {
 
         binding.oldage.setOnClickListener {
             startActivity(Intent(requireContext(),RegisterOldageHome::class.java))
+        }
+
+        binding.settings.setOnClickListener{
+            findNavController().navigate(R.id.navigation_home)
         }
 
         return root

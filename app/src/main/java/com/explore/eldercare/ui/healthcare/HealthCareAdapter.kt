@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.explore.eldercare.R
 import com.explore.eldercare.databinding.HealthcareListItemBinding
-import kotlin.math.max
-import kotlin.math.min
 
 class HealthCareAdapter(private var list : List<HealthcareData>): RecyclerView.Adapter<HealthCareAdapter.ViewHolder>() {
     inner class ViewHolder(val binding : HealthcareListItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -37,12 +35,8 @@ class HealthCareAdapter(private var list : List<HealthcareData>): RecyclerView.A
     }
 
     fun setData(newData: List<HealthcareData>) {
-        val sizeBefore = list.size
         list = newData
-        val sizeAfter = newData.size
-        notifyItemRangeChanged(0, min(sizeBefore, sizeAfter))
-        notifyItemRangeInserted(min(sizeBefore, sizeAfter), max(sizeBefore, sizeAfter) - min(sizeBefore, sizeAfter))
-        notifyItemRangeRemoved(max(sizeBefore, sizeAfter), max(sizeBefore, sizeAfter) - min(sizeBefore, sizeAfter))
+        notifyDataSetChanged()
     }
 
 }

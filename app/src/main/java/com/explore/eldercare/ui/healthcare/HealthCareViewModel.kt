@@ -9,11 +9,9 @@ import com.explore.eldercare.ui.models.Users
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HealthCareViewModel : ViewModel() {
@@ -21,29 +19,23 @@ class HealthCareViewModel : ViewModel() {
     private val _list = MutableLiveData<List<HealthcareData>>()
     val list: LiveData<List<HealthcareData>> get() = _list
     private val _loading = MutableLiveData<Boolean>()
-    val loading : LiveData<Boolean> get() = _loading
-    private val _dataLoaded = MutableLiveData<Boolean>()
-    val dataLoaded: LiveData<Boolean> get() = _dataLoaded
+    val loading: LiveData<Boolean> get() = _loading
     private lateinit var database: DatabaseReference
 
     fun getList() {
-        _loading.value = true
-        _dataLoaded.value= true
         viewModelScope.launch {
+            _loading.value = true
+            val newList = mutableListOf<HealthcareData>()
             database = Firebase.database.reference
-            database.child("healthcare").addValueEventListener(object  : ValueEventListener{
+            database.child("healthcare").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        val newList = mutableListOf<HealthcareData>()
                         for (item in snapshot.children) {
-                            Log.i("healthcare", item.key + "##" + item.value)
-                            FirebaseDatabase.getInstance().getReference("users").child(item.key!!)
-                                .get().addOnSuccessListener { data ->
-                                    if (data.exists()) {
-                                        Log.i("data", data.value.toString())
-                                        val newData = data.getValue(Users::class.java)
-                                        Log.i("data", newData.toString())
-                                        val datatoaddd = HealthcareData(
+                            database.child("users").child(item.key!!).addValueEventListener(object : ValueEventListener{
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.exists()) {
+                                        val newData = snapshot.getValue(Users::class.java)
+                                        val newInnerData = HealthcareData(
                                             name = newData?.name!!,
                                             age = newData.age!!,
                                             experience = newData.experience!!,
@@ -51,66 +43,28 @@ class HealthCareViewModel : ViewModel() {
                                             image = newData.image!!,
                                             email = newData.email!!
                                         )
-                                        newList.add(datatoaddd)
-                                        Log.d("list-size", newList.size.toString())
+                                        newList.add(newInnerData)
+                                        _list.value = newList
                                     }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
 
                                 }
+                            })
+
                         }
-                        _list.value = newList
-                        viewModelScope.launch {
-                            delay(500) // Delay for 500 milliseconds
-                            _loading.value = false
-                        }
-                        _dataLoaded.value = true //i want to update this only after 500 millis delay
-                    }
-                    else{
-                        viewModelScope.launch {
-                            delay(500) // Delay for 500 milliseconds
-                            _loading.value = false
-                        }
-                        _dataLoaded.value = false
+                        _loading.value = false
+                    } else {
+                        _loading.value = false
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.i("error", error.message)
-                    viewModelScope.launch {
-                        delay(500) // Delay for 500 milliseconds
-                        _loading.value = false
-                    }
-                    _dataLoaded.value = false
+                    _loading.value = false
                 }
             })
-//            FirebaseDatabase.getInstance().getReference("healthcare").get().addOnSuccessListener {
-//                if (it.exists()) {
-//                    val newList = mutableListOf<HealthcareData>()
-//                    for (item in it.children) {
-//                        Log.i("healthcare", item.key + "##" + item.value)
-//                        FirebaseDatabase.getInstance().getReference("users").child(item.key!!)
-//                            .get().addOnSuccessListener { data ->
-//                                if (data.exists()) {
-//                                    Log.i("data", data.value.toString())
-//                                    val newData = data.getValue(Users::class.java)
-//                                    Log.i("data", newData.toString())
-//                                    val datatoaddd = HealthcareData(
-//                                        name = newData?.name!!,
-//                                        age = newData.age!!,
-//                                        experience = newData.experience!!,
-//                                        address = newData.adress!!,
-//                                        image = newData.image!!,
-//                                        email = newData.email!!
-//                                    )
-//                                    newList.add(datatoaddd)
-//                                    Log.d("list-size", newList.size.toString())
-//                                }
-//
-//                            }
-//                    }
-//                    _list.value = newList
-//
-//                }
-//            }
         }
     }
 }

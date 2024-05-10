@@ -49,7 +49,7 @@ class RegisterOldageHome : AppCompatActivity() {
             description =binding.description.text.toString(),
             occupants =binding.noOccupants.text.toString(),
             contact =binding.contact.text.toString(),
-            adress =binding.adress.text.toString(),
+            address =binding.adress.text.toString(),
         )
 
         FirebaseDatabase.getInstance().getReference("oldagehome")

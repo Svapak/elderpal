@@ -4,6 +4,6 @@ data class OldageHome(
     val name : String? = "",
     val occupants :String? = "",
     val description: String? = "",
-    val adress: String? ="",
+    val address: String? ="",
     val contact: String?= ""
 )

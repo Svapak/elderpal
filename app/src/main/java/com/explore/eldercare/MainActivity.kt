@@ -40,5 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnNotifications.setOnClickListener {
             startActivity(Intent(this@MainActivity,NotificationActivity::class.java))
         }
+
+
     }
 }

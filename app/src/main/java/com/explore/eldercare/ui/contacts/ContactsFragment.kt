@@ -9,10 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.explore.eldercare.MainActivity
 import com.explore.eldercare.R
 import com.explore.eldercare.databinding.FragmentContactsBinding
 import com.explore.eldercare.ui.contacts.retrofit.DoctorList
@@ -22,42 +25,7 @@ import java.io.InputStream
 
 class ContactsFragment : Fragment() {
 
-//    lateinit var recyclerAdapter: DoctorListAdapter
-//
-//    private var _binding: FragmentContactsBinding? = null
-//    private val binding get() = _binding!!
-//
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        val contactsViewModel =
-//            ViewModelProvider(this).get(ContactsViewModel::class.java)
-//
-//        _binding = FragmentContactsBinding.inflate(inflater, container, false)
-//        val root: View = binding.root
-//
-//        initRecyclerView()
-//
-//        return root
-//    }
-//
-//    private fun initRecyclerView(){
-//         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
-//        recyclerAdapter= DoctorListAdapter(this)
-//        binding.recycler.adapter =recyclerAdapter
-//        getData()
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//    }
-//
-//    private fun getData(){
-//        val viewModel: ContactsViewModel= ViewModelProvider(this).get(ContactsViewModel::class.java)
-//        viewModel.getdata()
-//    }
+
 private lateinit var binding : FragmentContactsBinding
 
 
@@ -81,6 +49,10 @@ private lateinit var binding : FragmentContactsBinding
         val itemAdapter = DoctorListAdapter(dataList)
         binding.recycler.adapter = itemAdapter
         binding.recycler.setHasFixedSize(true)
+
+        binding.floatingActionButton.setOnClickListener{
+
+        }
 
 
         itemAdapter.setOnItemClickListener(object: DoctorListAdapter.onItemClickListener{

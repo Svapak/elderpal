@@ -14,15 +14,13 @@ import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.explore.eldercare.MainActivity
 import com.explore.eldercare.R
 import com.explore.eldercare.databinding.FragmentContactsBinding
 import com.explore.eldercare.ui.contacts.retrofit.DoctorList
-import com.explore.eldercare.ui.dashboard.DashboardViewModel
-import com.explore.eldercare.ui.meds.medicineActivity
-import com.explore.eldercare.ui.meds.medicineFragment
 import com.google.gson.Gson
 import java.io.InputStream
 
@@ -50,7 +48,7 @@ private lateinit var binding : FragmentContactsBinding
         getData()
 
         binding.floatingActionButton.setOnClickListener{
-            (activity as MainActivity).replaceFragment(medicineFragment())
+            findNavController().navigate(R.id.navigation_medicine)
         }
 
         val itemAdapter = DoctorListAdapter(dataList)

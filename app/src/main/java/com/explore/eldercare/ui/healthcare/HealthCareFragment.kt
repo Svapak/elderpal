@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.explore.eldercare.R
 import com.explore.eldercare.databinding.FragmentHealthCareBinding
-import com.explore.eldercare.ui.activities.jjjjActivity
 import com.explore.eldercare.ui.chatting.ChatActivity
-import com.explore.eldercare.ui.meds.RecyclerViewListener
 
 
 class HealthCareFragment : Fragment(), RecyclerViewListener {

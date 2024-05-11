@@ -2,7 +2,6 @@ package com.explore.eldercare.ui.medicine
 
 import android.content.Intent
 import android.net.Uri
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,13 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.explore.eldercare.R
-import com.explore.eldercare.databinding.FragmentDonationBinding
 import com.explore.eldercare.databinding.FragmentMedicine2Binding
-import com.explore.eldercare.databinding.FragmentMedicineBinding
-import com.explore.eldercare.ui.donation.DonationAdapter
-import com.explore.eldercare.ui.donation.DonationViewModel
 
 class MedicineFragment : Fragment() {
 

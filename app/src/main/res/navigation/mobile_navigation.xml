@@ -28,9 +28,6 @@
         android:name="com.explore.eldercare.ui.contacts.ContactsFragment"
         android:label="Contacts"
         tools:layout="@layout/fragment_contacts">
-        <action
-            android:id="@+id/action_navigation_contacts_to_medicineFragment2"
-            app:destination="@id/medicineFragment2" />
     </fragment>
 
     <fragment
@@ -38,12 +35,6 @@
         android:name="com.explore.eldercare.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/medicineFragment2"
-        android:name="com.explore.eldercare.ui.meds.medicineFragment"
-        android:label="fragment_medicine"
-        tools:layout="@layout/fragment_medicine" />
 
     <fragment
         android:id="@+id/navigation_medicine"

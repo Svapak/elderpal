@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +16,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.explore.eldercare.databinding.FragmentHomeBinding
-import okhttp3.OkHttpClient
-import org.json.JSONObject
+import com.explore.eldercare.ml.ModelFloat32
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.common.ops.NormalizeOp
+import org.tensorflow.lite.support.image.ImageProcessor
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.ResizeOp
+import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp
+import org.tensorflow.lite.support.image.ops.TransformToGrayscaleOp
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +36,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 class HomeFragment : Fragment() {
 
@@ -45,7 +52,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -57,29 +64,63 @@ class HomeFragment : Fragment() {
         binding.ivHome.setOnClickListener {
             Intent(Intent.ACTION_GET_CONTENT).also {
                 it.type = "image/*"
-                Launcher.launch(it)
+                launcher.launch(it)
 
             }
 
         }
 
         binding.btnSend.setOnClickListener {
-            val contentResolver = context?.contentResolver
-            val base64Image = contentResolver?.let { it1 -> uri?.let { it2 ->
-                imageToBase64(it1,
-                    it2
+            GlobalScope.launch {
+                val model = context?.let { it1 -> ModelFloat32.newInstance(it1) }
+                val inputStream: InputStream? = requireContext().contentResolver.openInputStream(uri!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                val imageProcessor = ImageProcessor.Builder()
+                    .add(ResizeOp(256,256,ResizeOp.ResizeMethod.BILINEAR))
+                    .add(ResizeWithCropOrPadOp(224,224))
+                    //.add(TransformToGrayscaleOp())
+                    .add(NormalizeOp(0.224f, 0.456f)
+
                 )
-            } }
-            if (base64Image != null) {
-                Log.i("data","done")
-                sendImageToServer(base64Image)
+                    .build()
+
+                var tensorImage = TensorImage(DataType.FLOAT32)
+                tensorImage.load(bitmap)
+                tensorImage = imageProcessor.process(tensorImage)
+                println(tensorImage.colorSpaceType)
+                val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.FLOAT32)
+                inputFeature0.loadBuffer(tensorImage.buffer)
+                val outputs = model?.process(inputFeature0)
+                val outputFeature0 = outputs?.outputFeature0AsTensorBuffer?.floatArray
+                val num= outputFeature0?.first()
+
+                println(activationFunction(num!!.toDouble()))
+                model.close()
             }
+//            val contentResolver = context?.contentResolver
+//            val base64Image = contentResolver?.let { it1 -> uri?.let { it2 ->
+//                imageToBase64(it1,
+//                    it2
+//                )
+//            } }
+//            if (base64Image != null) {
+//                Log.i("data","done")
+//                sendImageToServer(base64Image)
+//            }
         }
+
 
     }
 
+    private fun activationFunction(a: Double): Double {
+        val e = 2.671
+        val expo = Math.pow(e, a)
+        val value = expo / (1 + expo)
+        return value
+    }
 
-    private val Launcher =
+
+    private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             (
                     if (result.resultCode == AppCompatActivity.RESULT_OK) {
@@ -92,7 +133,7 @@ class HomeFragment : Fragment() {
 
         }
 
-    @OptIn(ExperimentalEncodingApi::class)
+
     fun imageToBase64(contentResolver: ContentResolver, uri: Uri): String? {
         return try {
             val inputStream: InputStream? = contentResolver.openInputStream(uri)

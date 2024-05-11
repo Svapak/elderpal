@@ -51,4 +51,10 @@
         android:label="Medicine"
         tools:layout="@layout/fragment_medicine2"/>
 
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.explore.eldercare.ui.chatting.chatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat"/>
+
 </navigation>

@@ -77,7 +77,7 @@ class DashboardFragment : Fragment() {
             (activity as MainActivity).replaceFragment(BlankFragment())
         }
         binding.chats.setOnClickListener{
-            (activity as MainActivity).replaceFragment(chatFragment())
+            findNavController().navigate(R.id.navigation_chat)
         }
 
 

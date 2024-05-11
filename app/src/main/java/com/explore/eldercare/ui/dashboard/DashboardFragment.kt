@@ -15,6 +15,7 @@ import com.explore.eldercare.ui.activities.ProfileActivity
 import com.explore.eldercare.ui.activities.RegisterHealthcare
 import com.explore.eldercare.ui.activities.RegisterOldageHome
 import com.explore.eldercare.ui.models.Users
+import com.explore.eldercare.ui.notifications.NotificationActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -51,7 +52,7 @@ class DashboardFragment : Fragment() {
                 }
             }
 
-        binding.ivEdit.setOnClickListener{
+        binding.profile.setOnClickListener{
             startActivity(Intent(requireContext(),ProfileActivity::class.java))
         }
 
@@ -63,8 +64,12 @@ class DashboardFragment : Fragment() {
             startActivity(Intent(requireContext(),RegisterOldageHome::class.java))
         }
 
+        binding.acceptrequest.setOnClickListener {
+            startActivity(Intent(requireContext(), NotificationActivity::class.java))
+        }
+
         binding.settings.setOnClickListener{
-            findNavController().navigate(R.id.navigation_home)
+            findNavController().navigate(R.id.navigation_medicine)
         }
 
         binding.chats.setOnClickListener{

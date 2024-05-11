@@ -55,7 +55,7 @@ class EditProfileActivity : AppCompatActivity() {
                     Config.hideDialog()
                 }
 
-                binding.etEditPfp.setOnClickListener {
+                binding.ivEdit.setOnClickListener {
                     Intent(Intent.ACTION_GET_CONTENT).also {intent->
                         intent.type = "image/*"
                         launcher.launch(intent)

@@ -18,18 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/pp" />
 
-    <ImageView
-        android:id="@+id/iv_edit"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@drawable/edit"
-        app:layout_constraintBottom_toTopOf="@+id/name"
-        app:layout_constraintEnd_toEndOf="@+id/pfp"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="@+id/pfp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
-
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
@@ -45,6 +33,18 @@
         app:layout_constraintTop_toBottomOf="@id/pfp" />
 
     <TextView
+        android:id="@+id/profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="20sp"
+        android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+        android:text="Profile"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
         android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
         android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
         android:text="Register as Health Worker"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintTop_toBottomOf="@id/profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -75,7 +75,7 @@
         android:layout_margin="16dp"
         android:textSize="20sp"
         android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
-        android:text="Accept Request"
+        android:text="Reminders"
         app:layout_constraintTop_toBottomOf="@id/oldage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
-        android:text="Settings"
+        android:text="Medicines"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/chats"
         app:layout_constraintEnd_toEndOf="parent"

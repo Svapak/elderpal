@@ -59,9 +59,9 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
-        binding.btnNotifications.setOnClickListener {
-            startActivity(Intent(this@MainActivity,NotificationActivity::class.java))
-        }
+//        binding.btnNotifications.setOnClickListener {
+//            startActivity(Intent(this@MainActivity,NotificationActivity::class.java))
+//        }
 
 
     }

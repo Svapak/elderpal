@@ -47,9 +47,9 @@ private lateinit var binding : FragmentContactsBinding
 
         getData()
 
-        binding.floatingActionButton.setOnClickListener{
-            findNavController().navigate(R.id.navigation_medicine)
-        }
+//        binding.floatingActionButton.setOnClickListener{
+//            findNavController().navigate(R.id.navigation_medicine)
+//        }
 
         val itemAdapter = DoctorListAdapter(dataList)
         binding.recycler.adapter = itemAdapter

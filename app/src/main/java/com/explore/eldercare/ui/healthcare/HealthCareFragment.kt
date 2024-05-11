@@ -1,8 +1,7 @@
 package com.explore.eldercare.ui.healthcare
 
-import androidx.fragment.app.viewModels
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.explore.eldercare.R
 import com.explore.eldercare.databinding.FragmentHealthCareBinding
-import com.explore.eldercare.ui.notifications.NotificationsViewModel
-import com.explore.eldercare.ui.notifications.RemindersAdapter
+import com.explore.eldercare.ui.activities.jjjjActivity
+import com.explore.eldercare.ui.chatting.ChatActivity
+import com.explore.eldercare.ui.meds.RecyclerViewListener
 
-class HealthCareFragment : Fragment() {
+
+class HealthCareFragment : Fragment(), RecyclerViewListener {
 
     private lateinit var adapter: HealthCareAdapter
     private lateinit var viewModel: HealthCareViewModel
@@ -38,7 +39,7 @@ class HealthCareFragment : Fragment() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application))[HealthCareViewModel::class.java]
         binding.rvHealthcare.layoutManager = LinearLayoutManager(context)
         binding.rvHealthcare.setHasFixedSize(true)
-        adapter = HealthCareAdapter(emptyList())
+        adapter = HealthCareAdapter(emptyList(),this)
         binding.rvHealthcare.adapter = adapter
 
         viewModel.loading.observe(viewLifecycleOwner) { showLoading ->
@@ -54,5 +55,25 @@ class HealthCareFragment : Fragment() {
         }
 
         viewModel.getList()
+
+
     }
+
+    override fun onRecyclerViewItemClick(view: View, user: HealthcareData, x :String) {
+        when(view.id){
+            R.id.button4->{
+                val intent = Intent(this@HealthCareFragment.requireContext(),ChatActivity::class.java)
+                intent.putExtra("name", user.name)
+                intent.putExtra("age",user.age)
+                intent.putExtra("image", user.experience)
+                intent.putExtra("address",user.address)
+                intent.putExtra("email", user.email)
+                intent.putExtra("image", user.image)
+                intent.putExtra("uid",x)
+                startActivity(intent)
+            }
+        }
+    }
+
+
 }

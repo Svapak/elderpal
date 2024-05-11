@@ -17,6 +17,7 @@ import com.explore.eldercare.databinding.FragmentDashboardBinding
 import com.explore.eldercare.ui.activities.ProfileActivity
 import com.explore.eldercare.ui.activities.RegisterHealthcare
 import com.explore.eldercare.ui.activities.RegisterOldageHome
+import com.explore.eldercare.ui.chatting.chatFragment
 import com.explore.eldercare.ui.meds.BlankFragment
 import com.explore.eldercare.ui.meds.medicineFragment
 import com.explore.eldercare.ui.models.Users
@@ -74,6 +75,9 @@ class DashboardFragment : Fragment() {
         }
         binding.button3.setOnClickListener{
             (activity as MainActivity).replaceFragment(BlankFragment())
+        }
+        binding.chats.setOnClickListener{
+            (activity as MainActivity).replaceFragment(chatFragment())
         }
 
 

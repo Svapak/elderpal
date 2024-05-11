@@ -1,10 +1,13 @@
 package com.explore.eldercare.ui.healthcare
 
+import android.content.Intent
 import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.explore.eldercare.ui.chatting.ChatActivity
 import com.explore.eldercare.ui.models.Users
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,9 +36,11 @@ class HealthCareViewModel : ViewModel() {
                         for (item in snapshot.children) {
                             database.child("users").child(item.key!!).addValueEventListener(object : ValueEventListener{
                                 override fun onDataChange(snapshot: DataSnapshot) {
+                                    val uid:String= item.key!!
                                     if (snapshot.exists()) {
                                         val newData = snapshot.getValue(Users::class.java)
                                         val newInnerData = HealthcareData(
+                                            uid = uid,
                                             name = newData?.name!!,
                                             age = newData.age!!,
                                             experience = newData.experience!!,
@@ -67,4 +72,8 @@ class HealthCareViewModel : ViewModel() {
             })
         }
     }
+
+
+
+
 }

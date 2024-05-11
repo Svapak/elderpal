@@ -11,11 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.explore.eldercare.MainActivity
 import com.explore.eldercare.R
 import com.explore.eldercare.databinding.FragmentDashboardBinding
 import com.explore.eldercare.ui.activities.ProfileActivity
 import com.explore.eldercare.ui.activities.RegisterHealthcare
 import com.explore.eldercare.ui.activities.RegisterOldageHome
+import com.explore.eldercare.ui.meds.BlankFragment
+import com.explore.eldercare.ui.meds.medicineFragment
 import com.explore.eldercare.ui.models.Users
 import com.explore.eldercare.utils.Config
 import com.google.firebase.auth.FirebaseAuth
@@ -69,6 +72,10 @@ class DashboardFragment : Fragment() {
         binding.settings.setOnClickListener{
             findNavController().navigate(R.id.navigation_home)
         }
+        binding.button3.setOnClickListener{
+            (activity as MainActivity).replaceFragment(BlankFragment())
+        }
+
 
 
         return root

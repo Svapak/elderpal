@@ -19,29 +19,6 @@ class medicineActivity : AppCompatActivity() {
         binding= ActivityMedicineBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recycler.layoutManager = LinearLayoutManager(this)
-
-        getData()
-        binding.recycler.setHasFixedSize(true)
-
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-    }
-
-    private fun getData(){
-        val inputStream : InputStream = this.assets.open("medicine.json")
-        val size = inputStream.available()
-        val buffer = ByteArray(size)
-        inputStream.read(buffer)
-        inputStream.close()
-
-        val json = String(buffer, Charsets.UTF_8)
-
-        val gson = Gson()
-        val meds = gson.fromJson(json, Array<medicineModel>::class.java)
-        dataList.addAll(meds)
-    }
 }

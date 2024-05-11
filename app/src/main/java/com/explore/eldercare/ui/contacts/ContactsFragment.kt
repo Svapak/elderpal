@@ -22,6 +22,7 @@ import com.explore.eldercare.databinding.FragmentContactsBinding
 import com.explore.eldercare.ui.contacts.retrofit.DoctorList
 import com.explore.eldercare.ui.dashboard.DashboardViewModel
 import com.explore.eldercare.ui.meds.medicineActivity
+import com.explore.eldercare.ui.meds.medicineFragment
 import com.google.gson.Gson
 import java.io.InputStream
 
@@ -40,11 +41,6 @@ private lateinit var binding : FragmentContactsBinding
     {
         binding = FragmentContactsBinding.inflate(inflater, container, false)
 
-        val view: View = inflater.inflate(R.layout.fragment_contacts, container, false)
-
-//        binding.floatingActionButton.setOnClickListener{
-//            Navigation.findNavController(view).navigate(R.id.action_navigation_contacts_to_blankFragment)
-//        }
           return binding.root
     }
 
@@ -53,6 +49,10 @@ private lateinit var binding : FragmentContactsBinding
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
 
         getData()
+
+        binding.floatingActionButton.setOnClickListener{
+            (activity as MainActivity).replaceFragment(medicineFragment())
+        }
 
         val itemAdapter = DoctorListAdapter(dataList)
         binding.recycler.adapter = itemAdapter

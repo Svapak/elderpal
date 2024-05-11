@@ -50,8 +50,8 @@ class medicineFragment : Fragment() {
         val json = String(buffer, Charsets.UTF_8)
 
         val gson = Gson()
-        val meds = gson.fromJson(json, Array<medicineModel>::class.java)
-        dataList.addAll(meds)
+        val medsss = gson.fromJson(json, Array<medicineModel>::class.java)
+        dataList.addAll(medsss)
     }
 
 }

@@ -1,15 +1,32 @@
 package com.explore.eldercare.ui.healthcare
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.explore.eldercare.R
 import com.explore.eldercare.databinding.HealthcareListItemBinding
+import com.explore.eldercare.ui.chatting.ChatActivity
+import com.explore.eldercare.ui.contacts.DoctorListAdapter
+import com.explore.eldercare.ui.meds.RecyclerViewListener
 
-class HealthCareAdapter(private var list : List<HealthcareData>): RecyclerView.Adapter<HealthCareAdapter.ViewHolder>() {
+class HealthCareAdapter(private var list : List<HealthcareData>,private val listener: RecyclerViewListener): RecyclerView.Adapter<HealthCareAdapter.ViewHolder>() {
     inner class ViewHolder(val binding : HealthcareListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
+    private lateinit var mListener: onItemClickListener
+
+
+
+    interface onItemClickListener{
+
+        fun osnItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: onItemClickListener){
+        mListener = listener
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = HealthcareListItemBinding.inflate(layoutInflater,parent,false)
@@ -30,6 +47,9 @@ class HealthCareAdapter(private var list : List<HealthcareData>): RecyclerView.A
             tvExperienceHealthcare.text = healthcareData.experience
             Glide.with(holder.itemView.context).load(healthcareData.image).placeholder(R.drawable.images)
                 .into(ivHealthcare)
+            button4.setOnClickListener{
+                listener.onRecyclerViewItemClick(button4, list[position], healthcareData.uid)
+            }
 
         }
     }
@@ -38,5 +58,7 @@ class HealthCareAdapter(private var list : List<HealthcareData>): RecyclerView.A
         list = newData
         notifyDataSetChanged()
     }
+
+
 
 }

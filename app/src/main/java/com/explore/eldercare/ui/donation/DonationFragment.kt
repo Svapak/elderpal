@@ -56,7 +56,7 @@ class DonationFragment : Fragment() {
         }
 
         adapter.overdueListener {
-            val url = "paytmmp://pay?pa=$it&am=7&tn=medicine-name".toUri()
+            val url = "paytmmp://pay?pa=$it".toUri()
             val urlIntent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse(url.toString())

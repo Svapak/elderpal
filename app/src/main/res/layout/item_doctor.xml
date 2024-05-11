@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="Name"
         android:gravity="center"/>
 
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="Name"
         android:gravity="center" />
 
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="Name"
         android:gravity="center"/>
     <TextView
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:lines="3"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="Name"
         android:gravity="center"/>
     <TextView
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="Name"
         android:lines="3"
         android:gravity="center"/>
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:lines="3"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="Name"
         android:gravity="center"/>
 

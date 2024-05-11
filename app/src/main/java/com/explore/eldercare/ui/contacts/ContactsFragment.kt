@@ -40,8 +40,7 @@ private lateinit var binding : FragmentContactsBinding
     ): View
     {
         binding = FragmentContactsBinding.inflate(inflater, container, false)
-
-          return binding.root
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

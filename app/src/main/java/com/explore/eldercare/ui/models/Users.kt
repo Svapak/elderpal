@@ -11,6 +11,6 @@ data class Users(
     val ailments: String? ="",
     val experience:String? ="",
     val bloodgroup: String? ="",
-    val adress: String? ="",
+    val address: String? ="",
     val image: String? =""
 )

@@ -23,12 +23,7 @@ import com.google.firebase.database.FirebaseDatabase
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
-    private val auth = FirebaseAuth.getInstance().currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,15 +33,24 @@ class DashboardFragment : Fragment() {
         val dashboardViewModel =
             ViewModelProvider(this)[DashboardViewModel::class.java]
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        _binding = FragmentDashboardBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().currentUser!!.uid)
             .get().addOnSuccessListener {
                 if(it.exists()){
                     val data= it.getValue(Users::class.java)
 
-                    binding.name.setText(data!!.name.toString())
+                    binding.name.text = data!!.name.toString()
 
                     Glide.with(this).load(data.image).placeholder(R.drawable.images)
                         .into(binding.pfp)
@@ -68,12 +72,5 @@ class DashboardFragment : Fragment() {
         binding.settings.setOnClickListener{
             findNavController().navigate(R.id.navigation_home)
         }
-
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

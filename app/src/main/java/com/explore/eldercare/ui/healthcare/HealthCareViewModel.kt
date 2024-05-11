@@ -39,7 +39,7 @@ class HealthCareViewModel : ViewModel() {
                                             name = newData?.name!!,
                                             age = newData.age!!,
                                             experience = newData.experience!!,
-                                            address = newData.adress!!,
+                                            address = newData.address!!,
                                             image = newData.image!!,
                                             email = newData.email!!
                                         )

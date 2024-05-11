@@ -79,7 +79,7 @@ class MakeProfileActivity : AppCompatActivity() {
             ailments =binding.pastailments.text.toString(),
             experience =binding.experience.text.toString(),
             bloodgroup =binding.Bloodgroup.text.toString(),
-            adress =binding.adress.text.toString(),
+            address =binding.adress.text.toString(),
             image =imageUrl.toString(),
         )
 

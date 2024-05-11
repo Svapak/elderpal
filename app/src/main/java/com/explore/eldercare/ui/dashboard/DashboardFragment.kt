@@ -26,14 +26,10 @@ class DashboardFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this)[DashboardViewModel::class.java]
-
-        _binding = FragmentDashboardBinding.inflate(layoutInflater)
+        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -70,7 +66,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.settings.setOnClickListener{
-            findNavController().navigate(R.id.navigation_home)
+            findNavController().navigate(R.id.navigation_medicine)
         }
     }
 }

@@ -29,31 +29,36 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setDisplayShowHomeEnabled(true)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//
+//        replaceFragment(HomeFragment())
+//
+//        val bottomNavigationView : BottomNavigationView =findViewById(R.id.nav_view)
+//        bottomNavigationView.setOnItemSelectedListener {
+//
+//            if(it.itemId == R.id.navigation_home){
+//                replaceFragment(HomeFragment())
+//            }
+//            if (it.itemId == R.id.navigation_contacts){
+//                replaceFragment(ContactsFragment())
+//            }
+//            if(it.itemId== R.id.navigation_dashboard){
+//                replaceFragment(DashboardFragment())
+//            }
+//            if(it.itemId==R.id.navigation_donation){
+//                replaceFragment(DonationFragment())
+//            }
+//            if(it.itemId==R.id.navigation_health_care){
+//                replaceFragment(HealthCareFragment())
+//            }
+//            return@setOnItemSelectedListener true
+//        }
 
-        replaceFragment(HomeFragment())
+        val navView: BottomNavigationView = binding.navView
 
-        val bottomNavigationView : BottomNavigationView =findViewById(R.id.nav_view)
-        bottomNavigationView.setOnItemSelectedListener {
-
-            if(it.itemId == R.id.navigation_home){
-                replaceFragment(HomeFragment())
-            }
-            if (it.itemId == R.id.navigation_contacts){
-                replaceFragment(ContactsFragment())
-            }
-            if(it.itemId== R.id.navigation_dashboard){
-                replaceFragment(DashboardFragment())
-            }
-            if(it.itemId==R.id.navigation_donation){
-                replaceFragment(DonationFragment())
-            }
-            if(it.itemId==R.id.navigation_health_care){
-                replaceFragment(HealthCareFragment())
-            }
-            return@setOnItemSelectedListener true
-        }
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navView.setupWithNavController(navController)
 
         binding.btnNotifications.setOnClickListener {
             startActivity(Intent(this@MainActivity,NotificationActivity::class.java))

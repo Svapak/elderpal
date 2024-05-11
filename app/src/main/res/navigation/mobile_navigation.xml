@@ -38,10 +38,17 @@
         android:name="com.explore.eldercare.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+
     <fragment
         android:id="@+id/medicineFragment2"
         android:name="com.explore.eldercare.ui.meds.medicineFragment"
         android:label="fragment_medicine"
         tools:layout="@layout/fragment_medicine" />
+
+    <fragment
+        android:id="@+id/navigation_medicine"
+        android:name="com.explore.eldercare.ui.medicine.MedicineFragment"
+        android:label="Medicine"
+        tools:layout="@layout/fragment_medicine2"/>
 
 </navigation>

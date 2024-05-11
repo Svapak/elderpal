@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.explore.eldercare.MainActivity
@@ -20,6 +21,7 @@ import com.explore.eldercare.R
 import com.explore.eldercare.databinding.FragmentContactsBinding
 import com.explore.eldercare.ui.contacts.retrofit.DoctorList
 import com.explore.eldercare.ui.dashboard.DashboardViewModel
+import com.explore.eldercare.ui.meds.medicineActivity
 import com.google.gson.Gson
 import java.io.InputStream
 
@@ -37,7 +39,13 @@ private lateinit var binding : FragmentContactsBinding
     ): View
     {
         binding = FragmentContactsBinding.inflate(inflater, container, false)
-        return binding.root
+
+        val view: View = inflater.inflate(R.layout.fragment_contacts, container, false)
+
+//        binding.floatingActionButton.setOnClickListener{
+//            Navigation.findNavController(view).navigate(R.id.action_navigation_contacts_to_blankFragment)
+//        }
+          return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -50,9 +58,7 @@ private lateinit var binding : FragmentContactsBinding
         binding.recycler.adapter = itemAdapter
         binding.recycler.setHasFixedSize(true)
 
-        binding.floatingActionButton.setOnClickListener{
 
-        }
 
 
         itemAdapter.setOnItemClickListener(object: DoctorListAdapter.onItemClickListener{

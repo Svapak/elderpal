@@ -55,6 +55,8 @@ class ProfileActivity : AppCompatActivity() {
                 binding.edit.setOnClickListener{
                     startActivity(Intent(this, EditProfileActivity::class.java))
                 }
+            }.addOnFailureListener{
+                Config.hideDialog()
             }
     }
 }

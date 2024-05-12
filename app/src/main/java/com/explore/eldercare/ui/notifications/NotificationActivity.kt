@@ -120,7 +120,7 @@ class NotificationActivity : AppCompatActivity() {
 
             val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-            context.startActivity(intent)
+            startActivity(intent)
 
             return false
         }

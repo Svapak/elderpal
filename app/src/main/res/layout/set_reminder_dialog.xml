@@ -65,6 +65,7 @@
             android:layout_gravity="center"
             app:singleSelection="true"
             android:layout_height="wrap_content">
+
             <Button
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:id="@+id/btn_once"
@@ -83,12 +84,13 @@
                 />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:id="@+id/btn_create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Save"
+            android:text="Set"
             />
 
     </LinearLayout>
